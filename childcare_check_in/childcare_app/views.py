@@ -4,13 +4,15 @@ from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm, User
 from django.urls import reverse_lazy
+from random import choice
+from string import digits
 
 from childcare_app.models import Child, Profile
 
 
 
 class IndexView(TemplateView):
-    template_name = "index.html"
+    template_name = "index.html"g
 
 
 class UserCreateView(CreateView):
@@ -26,5 +28,7 @@ class ChildCreateView(CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.user = self.request.user
-        
+        instance.code = ""
+        for i in range(4):
+            instance.code += choice(digits)
+        return super().form_valid(form)
