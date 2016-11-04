@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {{ object.first_name }} {{ object.last_name }}
+
+  <a href="{% url 'child_update_view' object.id %}">Check In/Out</a>
+{% endblock %}

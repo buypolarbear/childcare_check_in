@@ -1,5 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  
+
+  <form class="" action="" method="post">
+    {% csrf_token %}
+    <input type="text" name="code" placeholder="CHILD PIN">
+    <input type="submit" name="name" value="Get Child">
+  </form>
+
+
+{% for child in all_codes %}
+
+  {{ child.code }}
+  <br>
+  {{ child.check_in }}
+  <br>
+  {{ child.check_out }}
+  <br>
+{% endfor %}
+
 {% endblock %}
