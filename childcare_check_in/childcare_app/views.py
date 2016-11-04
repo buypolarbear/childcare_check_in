@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from datetime import datetime
 
 
-from childcare_app.models import Child, Profile
+from childcare_app.models import Child, Profile, Check
 
 
 class IndexView(TemplateView):
@@ -24,7 +24,7 @@ class IndexView(TemplateView):
     def post(self, request):
         code = request.POST["code"]
         child = Child.objects.get(code=code)
-        return HttpResponseRedirect(reverse("child_update_view", args=[child.id]))
+        return HttpResponseRedirect(reverse("check_create_view", args=[child.id]))
 
 
 class UserCreateView(CreateView):
@@ -46,15 +46,41 @@ class ChildCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ChildUpdateView(UpdateView):
-    model = Child
-    fields = ('on_site',)
+class CheckCreateView(CreateView):
+    model = Check
     success_url = reverse_lazy("index_view")
+    fields = ("on_site",)
 
     def form_valid(self, form):
         instance = form.save(commit=False)
+        instance.child = Child.objects.get(id=self.kwargs['pk'])
         if instance.on_site:
-            instance.check_in = datetime.now()
-        else:
-            instance.check_out = datetime.now()
-        return super().form_valid(form)
+            return super().form_valid(form)
+        return super().form_invalid(form)
+
+
+class CheckUpdateView(UpdateView):
+    model = Check
+    success_url = reverse_lazy("index_view")
+    fields = ("on_site", )
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if not instance.on_site:
+            instance.time_out = datetime.now()
+            return super().form_valid(form)
+        return super().form_invalid(form)
+
+
+# class ChildUpdateView(UpdateView):
+#     model = Child
+#     fields = ('on_site',)
+#     success_url = reverse_lazy("index_view")
+#
+#     def form_valid(self, form):
+#         instance = form.save(commit=False)
+#         if instance.on_site:
+#             instance.check_in = datetime.now()
+#         else:
+#             instance.check_out = datetime.now()
+#         return super().form_valid(form)

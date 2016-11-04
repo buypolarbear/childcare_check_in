@@ -20,13 +20,20 @@ class Profile(models.Model):
     user = models.OneToOneField('auth.User')
     access_level = models.CharField(max_length=1, choices=ACCESS_LEVEL)
 
-    
 
 class Child(models.Model):
     first_name = models.CharField(max_length=15)
     last_name = models.CharField(max_length=25)
     parent = models.ForeignKey('auth.User')
-    on_site = models.BooleanField(default=False)
-    check_in = models.DateTimeField(auto_now=False, null=True)
-    check_out = models.DateTimeField(auto_now=False, null=True)
     code = models.CharField(max_length=4, unique=True)
+
+    @property
+    def get_check(self):
+        return Check.objects.get(child=self)
+
+
+class Check(models.Model):
+    child = models.ForeignKey(Child)
+    on_site = models.BooleanField(default=False)
+    time_in = models.DateTimeField(auto_now_add=True)
+    time_out = models.DateTimeField(auto_now=False, null=True)

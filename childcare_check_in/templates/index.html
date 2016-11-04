@@ -5,7 +5,7 @@
   <form class="" action="" method="post">
     {% csrf_token %}
     <input type="text" name="code" placeholder="CHILD PIN">
-    <input type="submit" name="name" value="Get Child">
+    <input type="submit" name="" value="Get Child">
   </form>
 
 
@@ -13,9 +13,9 @@
 
   {{ child.code }}
   <br>
-  {{ child.check_in }}
+  {{ child.get_check.time_in }}
   <br>
-  {{ child.check_out }}
+  {{ child.get_check.time_out }}
   <br>
 {% endfor %}
 
