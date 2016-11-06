@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'childcare_app'
+    'childcare_app',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [

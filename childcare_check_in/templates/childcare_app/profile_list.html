@@ -3,39 +3,70 @@
 {% block content %}
 
 {% if request.user.profile.access_level == 'p' %}
+<div class="ui two column grid">
+  <div class="column">
   {% for child in request.user.profile.all_children %}
-    {{ child.first_name }} {{ child.last_name }}
-    <br>
-    All Stays:
-    <br>
-    {% for check in child.all_checks %}
-      Time In: {{ check.time_in }}
+    <h5 class="ui top attached raised header">
+      {{ child.first_name }} {{ child.last_name }}
+    </h5>
+    <div class="ui attached raised segment">
+      <b>All Stays:</b>
       <br>
-      Time Out: {{ check.time_out }}
-      <br>
+      {% for check in child.all_checks %}
+        Time In: {{ check.time_in }}
+        <br>
+        Time Out: {{ check.time_out }}
+        <hr>
+      {% endfor %}
+    </div>
+    <div class="ui attached raised segment">
+      <b>Length of All Stays:</b>
+      <br>{{ child.total_time }} Hours
+    </div>
+    <div class="ui attached raised segment">
+      <b>Amount:</b>
+      <br>${{ child.total_payment|floatformat:"2" }}
+    </div>
     {% endfor %}
-    Total Length of Stays: {{ child.total_time }} Hours
-    <br>
-    Total Payment: ${{ child.total_payment|floatformat:"2" }}
-    <hr>
-  {% endfor %}
-
-  Total Payment of All Children: ${{ request.user.profile.all_payments|floatformat:"2" }}
+  </div>
+  <div class="column">
+    <div class="ui raised segment massive">
+      Total Cost of All Children: ${{ request.user.profile.all_payments|floatformat:"2" }}
+    </div>
+  </div>
+</div>
 {% endif %}
 
 {% if request.user.profile.access_level == 's' %}
-  <a href="{% url 'child_create_view' %}">New Child</a>
-  <br>
+
+
+  <div class="ui three column centered grid">
+    <div class="column">
+    <h1>All Time Logs</h1>
   {% for check in request.user.profile.all_checks %}
-    <br>
-    Child: {{ check.child.first_name }} {{ check.child.last_name }} <br>
-    Time In: {{ check.time_in }} <br>
-    Time Out: {{ check.time_out }} <hr>
-
-    <br>
-
+  <h5 class="ui top attached raised header">
+    Child: {{ check.child.first_name }} {{ check.child.last_name }}
+  </h5>
+  <div class="ui attached raised segment">
+    <b>Time In:</b> {{ check.time_in }}<br>
+    <b>Time Out:</b> {{ check.time_out }}
+  </div>
   {% endfor %}
+  </div>
+  <div class="column">
+    <h1>Child Codes</h1>
+    {% for child in request.user.profile.all_children %}
+    <h5 class="ui top attached raised header">{{ child.first_name }} {{ child.last_name }}</h5>
+    <div class="ui attached raised segment">
+      {{ child.code }}
+    </div>
+    {% endfor %}
+  </div>
 
+  <div class="column">
+    <a href="{% url 'child_create_view' %}"><button type="button" class="massive ui button teal basic">New Child</button></a>
+  </div>
+  </div>
 {% endif %}
 
 {% endblock %}

@@ -1,12 +1,37 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block content %}
 
-  <form class="" action="" method="post">
-    {% csrf_token %}
-    <input type="text" name="code" placeholder="CHILD PIN">
-    <input type="submit" name="" value="Get Child">
-  </form>
+<div class="ui two column grid">
+  <div class="column">
+    <div class="ui raised segment massive">
+      <h1>
+      Drop Them Off & Forget.
+      <hr>
+      Just Remember To Pick Them Up.
+      </h1>
+    </div>
+
+    <img class="ui large image" src="{% static 'crying-baby-wallpaper.jpg' %}">
+
+  </div>
+  <div class="column">
+  <div class="ui segment">
+    <form class="" action="" method="post">
+      {% csrf_token %}
+      <div class="ui massive icon input">
+        <input type="text" name="code" placeholder="CHILD PIN">
+        <input type="submit" class="massive ui inverted green button" value="ENTER">
+      </div>
+    </form>
+  </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
 
 
 {% for child in all_codes %}
@@ -27,5 +52,3 @@
   <hr>
 
 {% endfor %}
-
-{% endblock %}

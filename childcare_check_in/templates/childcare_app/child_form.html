@@ -2,10 +2,12 @@
 
 {% block content %}
 
+<div class="ui massive form">
   <form class="" action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Save">
   </form>
+</div>
 
 {% endblock %}
