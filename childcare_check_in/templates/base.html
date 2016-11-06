@@ -10,7 +10,7 @@
       <a href="{% url 'user_create_view' %}">New User</a>
       <a href="{% url 'login' %}">Login</a>
     {% else %}
-    <a href="{% url 'child_create_view' %}">New Child</a>
+
     <a href="{% url 'logout' %}?next={% url 'index_view' %}">Logout</a>
     {% endif %}
 

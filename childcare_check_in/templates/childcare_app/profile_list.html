@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if request.user.profile.access_level == 'p' %}
+  {% for child in request.user.profile.all_children %}
+    {{ child.first_name }} {{ child.last_name }}
+    <br>
+    All Stays:
+    <br>
+    {% for check in child.all_checks %}
+      Time In: {{ check.time_in }}
+      <br>
+      Time Out: {{ check.time_out }}
+      <br>
+    {% endfor %}
+    Total Length of Stays: {{ child.total_time }} Hours
+    <br>
+    Total Payment: ${{ child.total_payment|floatformat:"2" }}
+    <hr>
+  {% endfor %}
+
+  Total Payment of All Children: ${{ request.user.profile.all_payments|floatformat:"2" }}
+{% endif %}
+
+{% if request.user.profile.access_level == 's' %}
+  <a href="{% url 'child_create_view' %}">New Child</a>
+  <br>
+  {% for check in request.user.profile.all_checks %}
+    <br>
+    Child: {{ check.child.first_name }} {{ check.child.last_name }} <br>
+    Time In: {{ check.time_in }} <br>
+    Time Out: {{ check.time_out }} <hr>
+
+    <br>
+
+  {% endfor %}
+
+{% endif %}
+
+{% endblock %}

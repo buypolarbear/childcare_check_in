@@ -12,11 +12,20 @@
 {% for child in all_codes %}
 
   {{ child.code }}
+  total time: {{ child.total_time }} hours
+  total payment: ${{ child.total_payment }}
+
+
   <br>
-  {{ child.get_check.time_in }}
+  {% for x in child.all_checks %}
+  check in: {{ x.time_in }}
   <br>
-  {{ child.get_check.time_out }}
-  <br>
+  check out: {{ x.time_out }}
+  length: {{ x.daily_time }}
+  <br><br>
+  {% endfor %}
+  <hr>
+
 {% endfor %}
 
 {% endblock %}

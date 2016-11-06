@@ -13,6 +13,10 @@ from datetime import datetime
 from childcare_app.models import Child, Profile, Check
 
 
+class ProfileListView(ListView):
+    model = Profile
+
+
 class IndexView(TemplateView):
     template_name = "index.html"
 
@@ -24,6 +28,11 @@ class IndexView(TemplateView):
     def post(self, request):
         code = request.POST["code"]
         child = Child.objects.get(code=code)
+        check = Check.objects.filter(child=child).first()
+        if check:
+            if not check.on_site:
+                return HttpResponseRedirect(reverse("check_create_view", args=[child.id]))
+            return HttpResponseRedirect(reverse("check_update_view", args=[check.id]))
         return HttpResponseRedirect(reverse("check_create_view", args=[child.id]))
 
 
