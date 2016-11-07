@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<div class="ui massive form">
-  <form class="" action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save">
-  </form>
+<div class="ui two column centered grid">
+  <div class="column">
+    <div class="ui large form">
+      <form class="" action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="massive ui inverted red button" value="Save">
+      </form>
+    </div>
+  </div>
 </div>
-
 {% endblock %}

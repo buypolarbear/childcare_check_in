@@ -37,6 +37,7 @@ class Profile(models.Model):
         total = sum(child.total_payment for child in all_children)
         return total
 
+
 class Child(models.Model):
     first_name = models.CharField(max_length=15)
     last_name = models.CharField(max_length=25)

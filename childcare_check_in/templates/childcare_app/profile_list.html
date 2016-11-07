@@ -39,7 +39,6 @@
 
 {% if request.user.profile.access_level == 's' %}
 
-
   <div class="ui three column centered grid">
     <div class="column">
     <h1>All Time Logs</h1>
@@ -67,6 +66,7 @@
     <a href="{% url 'child_create_view' %}"><button type="button" class="massive ui button teal basic">New Child</button></a>
   </div>
   </div>
+
 {% endif %}
 
 {% endblock %}
