@@ -8,6 +8,7 @@ from random import choice
 from string import digits
 from django.http import HttpResponseRedirect
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 
 from childcare_app.models import Child, Profile, Check
@@ -27,13 +28,17 @@ class IndexView(TemplateView):
 
     def post(self, request):
         code = request.POST["code"]
-        child = Child.objects.get(code=code)
-        check = Check.objects.filter(child=child).first()
-        if check:
-            if not check.on_site:
-                return HttpResponseRedirect(reverse("check_create_view", args=[child.id]))
-            return HttpResponseRedirect(reverse("check_update_view", args=[check.id]))
-        return HttpResponseRedirect(reverse("check_create_view", args=[child.id]))
+        try:
+            child = Child.objects.get(code=code)
+            check = Check.objects.filter(child=child).first()
+            if check:
+                if not check.on_site:
+                    return HttpResponseRedirect(reverse("check_create_view", args=[child.id]))
+                return HttpResponseRedirect(reverse("check_update_view", args=[check.id]))
+            return HttpResponseRedirect(reverse("check_create_view", args=[child.id]))
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect(reverse("index_view"))
+
 
 
 class UserCreateView(CreateView):
@@ -44,7 +49,7 @@ class UserCreateView(CreateView):
 
 class ChildCreateView(CreateView):
     model = Child
-    success_url = reverse_lazy("index_view")
+    success_url = reverse_lazy("profile_view")
     fields = ('first_name', 'last_name', 'parent')
 
     def form_valid(self, form):
@@ -79,17 +84,3 @@ class CheckUpdateView(UpdateView):
             instance.time_out = datetime.now()
             return super().form_valid(form)
         return super().form_invalid(form)
-
-
-# class ChildUpdateView(UpdateView):
-#     model = Child
-#     fields = ('on_site',)
-#     success_url = reverse_lazy("index_view")
-#
-#     def form_valid(self, form):
-#         instance = form.save(commit=False)
-#         if instance.on_site:
-#             instance.check_in = datetime.now()
-#         else:
-#             instance.check_out = datetime.now()
-#         return super().form_valid(form)

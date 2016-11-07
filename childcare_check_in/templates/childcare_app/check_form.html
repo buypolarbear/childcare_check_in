@@ -5,10 +5,15 @@
 <div class="column">
 
 
-<div class="ui massive form">
+<div class="ui small form">
   <form class="" action="" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <div class="ui slider checkbox">
+      <input type="checkbox" name="" value="">
+      <label>On Site</label>
+    </div>
+
     <input type="submit" class="massive ui inverted blue button" value="Save">
   </form>
   </div>
